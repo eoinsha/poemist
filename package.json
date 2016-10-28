@@ -1,0 +1,35 @@
+{
+  "name": "poemist",
+  "version": "1.0.0",
+  "description": "Generate videos of poetry using PoetryDB",
+  "bin": {
+    "gibberfish": "bin/run.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "postversion": "git push origin HEAD && git push origin v${npm_package_version}",
+    "test": "echo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/eoinsha/poemist.git"
+  },
+  "keywords": [
+    "poem",
+    "video",
+    "generator"
+  ],
+  "author": "Eoin Shanaghy <eoin@showpiper.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eoinsha/poemist/issues"
+  },
+  "homepage": "https://github.com/eoinsha/poemist#readme",
+  "dependencies": {
+    "async": "^2.1.2",
+    "gibberfish": "^3.0.3",
+    "mkdirp": "^0.5.1",
+    "request": "^2.76.0",
+    "sanitize-filename": "^1.6.1"
+  }
+}
