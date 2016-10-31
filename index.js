@@ -8,6 +8,7 @@ const Gibberfish = require('gibberfish');
 const Mkdirp = require('mkdirp');
 const Request = require('request');
 const Sanitize = require('sanitize-filename');
+const VttPdf = require('vtt-pdf');
 
 module.exports = function(poetName, done) {
   Async.waterfall([
@@ -19,7 +20,6 @@ module.exports = function(poetName, done) {
   ], done);
 
   function getPoems(done) {
-    console.log('Retrieving poems');
     const poemsUri = `http://poetrydb.org/author/${poetName}`;
     Request(poemsUri, (error, response, body) => done(error, body && JSON.parse(body)));
   }
@@ -41,20 +41,25 @@ module.exports = function(poetName, done) {
     Async.eachSeries(poems, makePoemVideo, vidsDone);
 
     function makePoemVideo (poem, poemDone) {
-      console.log('Doing', poem.title);
       const poemDir = path.join(poetDir, Sanitize(poem.title));
       Async.series([
         cb => Mkdirp(poemDir, cb),
         writePoemJson,
         cb => Gibberfish({
           'in': poem.lines.join('\n').replace(/--/g, '\u2014'), // emdash
-          'out': path.join(poemDir, `poem.mp4`)
-        }, cb)
+          'out': path.join(poemDir, 'poem.mp4')
+        }, cb),
+        makePoemPdf
       ], poemDone);
 
       function writePoemJson(jsonDone) {
-        console.log('Writing JSON');
         fs.writeFile(path.join(poemDir, 'poem.json'), JSON.stringify(poem, null, '  '), jsonDone);
+      }
+
+      function makePoemPdf(pdfDone) {
+        const vttPath = path.join(poemDir, 'poem.vtt');
+        const pdfPath = path.join(poemDir, 'poem.pdf');
+        VttPdf(vttPath, pdfPath, { cuesPerPage: 4 }, pdfDone);
       }
     }
   }

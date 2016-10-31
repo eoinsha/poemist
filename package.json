@@ -27,9 +27,10 @@
   "homepage": "https://github.com/eoinsha/poemist#readme",
   "dependencies": {
     "async": "^2.1.2",
-    "gibberfish": "^3.0.3",
+    "gibberfish": "^3.0.4",
     "mkdirp": "^0.5.1",
     "request": "^2.76.0",
-    "sanitize-filename": "^1.6.1"
+    "sanitize-filename": "^1.6.1",
+    "vtt-pdf": "^1.2.0"
   }
 }
